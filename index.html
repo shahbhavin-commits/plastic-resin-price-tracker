@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plastic Resin Price Tracker - Grade Specific Rates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            padding: 25px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #0b7dda;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .btn-toggle {
+            background: #9C27B0;
+            color: white;
+        }
+        
+        .btn-toggle:hover {
+            background: #7B1FA2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+        }
+        
+        .last-updated {
+            margin-left: auto;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .alert {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 0 0 20px 0;
+            border-radius: 5px;
+        }
+        
+        .resin-section {
+            margin-bottom: 40px;
+        }
+        
+        .resin-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .resin-icon-large {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .ldpe { background: #FF6B6B; }
+        .hdpe { background: #4ECDC4; }
+        .pp { background: #95E1D3; color: #333; }
+        
+        .grade-table-container {
+            overflow-x: auto;
+            border: 2px solid #e0e0e0;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        .grade-table thead {
+            background: #f8f9fa;
+        }
+        
+        .grade-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e3c72;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .grade-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .grade-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .grade-code {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .price-cell {
+            font-weight: 700;
+            color: #4CAF50;
+            font-size: 1.1em;
+        }
+        
+        .manufacturer {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #1976d2;
+            font-weight: 600;
+        }
+        
+        .price-change {
+            font-size: 13px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .positive {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .source-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Plastic Resin Price Tracker - Grade Specific</h1>
+            <p>Detailed prices per grade from Asian markets (India) - Updated Feb 17, 2026</p>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-primary" onclick="refreshPrices()">🔄 Refresh Display</button>
+            <button class="btn btn-secondary" onclick="exportData()">📊 Export to CSV</button>
+            <button class="btn btn-toggle" onclick="toggleView()">🔀 Toggle Summary/Detail View</button>
+            <div class="last-updated" id="lastUpdated">Last updated: Feb 17, 2026 (Includes all Feb price changes)</div>
+        </div>
+        
+        <div class="content">
+            <div class="alert">
+                <strong>📢 Latest Update (Feb 17, 2026):</strong> THREE price revisions in Feb 2026!<br>
+                • <strong>Feb 1:</strong> All manufacturers +₹2,500/MT (PE), +₹2,500/MT (PP domestic)<br>
+                • <strong>Feb 9:</strong> HDPE +₹2,000/MT (Low MFI +₹3,000/MT), LLDPE +₹2,500/MT, PP +₹2,000/MT<br>
+                • <strong>Feb 15 (RIL):</strong> PP Deemed Export +₹4/kg (₹4,000/MT) - NO CHANGE in domestic PP/PE<br>
+                <strong>Total Feb increases: LDPE ~₹4-4.5/kg | HDPE ~₹4-5/kg | PP ~₹4-4.5/kg</strong>
+            </div>
+            
+            <div id="priceContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let detailView = true;
+        
+        const gradeData = {
+            ldpe: [
+                { code: 'JF19010', desc: 'Mono & Multilayer blown films, liner bags', mfr: 'Reliance', price: 126, mt: 126000, change: '+4.5' },
+                { code: 'JF18010', desc: 'Lamination films, stretch cling films', mfr: 'Reliance', price: 125, mt: 125000, change: '+4.5' },
+                { code: 'JF18020', desc: 'Cast and Blown films, stretch wrap, bubble wrap', mfr: 'Reliance', price: 127, mt: 127000, change: '+4.5' },
+                { code: 'F17030', desc: 'Cast films, hygiene films, personal care packaging', mfr: 'Reliance', price: 128, mt: 128000, change: '+4.5' },
+                { code: 'JD22010', desc: 'Drip irrigation laterals (pipes)', mfr: 'Reliance', price: 124, mt: 124000, change: '+4.5' },
+                { code: 'E24065', desc: 'Extrusion coating (on woven fabric, paper, foil)', mfr: 'Reliance', price: 122, mt: 122000, change: '+4.5' },
+                { code: 'M26500', desc: 'Masterbatch base resin, injection molded lids', mfr: 'Reliance', price: 120, mt: 120000, change: '+4.5' },
+                { code: 'F0120L', desc: 'General purpose packaging, multilayer films', mfr: 'IOCL', price: 123, mt: 123000, change: '+5.0' },
+                { code: 'F0118L', desc: 'General purpose packaging, drip laterals', mfr: 'IOCL', price: 122, mt: 122000, change: '+5.0' }
+            ],
+            hdpe: [
+                { code: 'HD53EA', desc: 'Stretched tapes, woven sacks, monofilaments', mfr: 'Reliance', price: 110, mt: 110000, change: '+4.5' },
+                { code: 'HD50MA180', desc: 'Houseware, storage bins, thin-walled products', mfr: 'Reliance', price: 112, mt: 112000, change: '+4.5' },
+                { code: 'M60075', desc: 'Plastic crates, luggage shells, industrial bins', mfr: 'Reliance', price: 116, mt: 116000, change: '+5.5' },
+                { code: 'B50603', desc: 'Blow molding of oil/jerry cans (up to 20L)', mfr: 'Reliance', price: 111, mt: 111000, change: '+4.5' },
+                { code: 'F46003', desc: 'Co-extruded liners and small blow-molded bottles', mfr: 'Reliance', price: 113, mt: 113000, change: '+4.5' },
+                { code: 'S42005', desc: 'General purpose blending and sheathing', mfr: 'Reliance', price: 109, mt: 109000, change: '+4.5' },
+                { code: 'P0142S', desc: 'PE 63 pressure pipes, sprinkler pipes', mfr: 'IOCL', price: 115, mt: 115000, change: '+5.0' },
+                { code: 'B0148D', desc: 'Medium to large type blow-molded containers (up to 120L)', mfr: 'IOCL', price: 113, mt: 113000, change: '+5.0' },
+                { code: 'B0155D', desc: 'General purpose blow-molded containers (up to 20L)', mfr: 'IOCL', price: 112, mt: 112000, change: '+5.0' },
+                { code: 'M0861S', desc: 'Injection molding for crates, furniture, houseware', mfr: 'IOCL', price: 115, mt: 115000, change: '+5.5' },
+                { code: 'B0151D', desc: 'Blow molding for containers (bottles, oil cans)', mfr: 'GAIL', price: 111, mt: 111000, change: '+4.5' },
+                { code: 'F0146D', desc: 'HDPE film (grocery bags, liners)', mfr: 'GAIL', price: 110, mt: 110000, change: '+4.5' }
+            ],
+            pp: [
+                { code: 'H110QS', desc: 'Biaxially Oriented PP (BOPP) films for food packaging', mfr: 'NAYARA', price: 119, mt: 119000, change: '+4.5' },
+                { code: 'H100S', desc: 'Injection molding of industrial and household items', mfr: 'NAYARA', price: 116, mt: 116000, change: '+4.5' },
+                { code: 'HF010', desc: 'TOPP (Tubular Quenched) Film - garment packaging', mfr: 'MRPL', price: 118, mt: 118000, change: '+4.5' },
+                { code: 'HM012T', desc: 'Stretched tapes and woven sacks (Raffia)', mfr: 'MRPL', price: 114, mt: 114000, change: '+4.5' },
+                { code: 'HR003', desc: 'Thermoforming and extrusion applications', mfr: 'MRPL', price: 117, mt: 117000, change: '+4.5' },
+                { code: 'H110EY', desc: 'Raffia for woven sacks and monofilaments', mfr: 'Reliance', price: 115, mt: 115000, change: '+4.5' },
+                { code: 'H110MA', desc: 'Injection molding for houseware and furniture', mfr: 'Reliance', price: 117, mt: 117000, change: '+4.5' },
+                { code: 'P0142SU', desc: 'Pressure pipes (PE 80/PE 100) and sprinkler systems', mfr: 'IOCL', price: 118, mt: 118000, change: '+4.5' },
+                { code: 'Y0154S', desc: 'Monofilaments and netting', mfr: 'IOCL', price: 115, mt: 115000, change: '+4.5' }
+            ]
+        };
+
+        function displayPrices() {
+            const container = document.getElementById('priceContainer');
+            
+            if (detailView) {
+                // Detailed grade-specific view
+                container.innerHTML = `
+                    ${createResinSection('LDPE', 'Low-Density Polyethylene', 'ldpe', gradeData.ldpe)}
+                    ${createResinSection('HDPE', 'High-Density Polyethylene', 'hdpe', gradeData.hdpe)}
+                    ${createResinSection('PP', 'Polypropylene', 'pp', gradeData.pp)}
+                    
+                    <div class="source-info">
+                        <strong>📊 Complete Feb 2026 Price Update History:</strong><br>
+                        <strong>Round 1 - Feb 1, 2026:</strong><br>
+                        • <strong>Reliance:</strong> LDPE +₹2,000/MT (except 22FA002 +₹2,500/MT), HDPE/LLDPE +₹2,500/MT, PP domestic +₹2,500/MT, PP deemed export +₹4,000/MT<br>
+                        • <strong>IOCL:</strong> All PE +₹2,500/MT, PP +₹2,500/MT<br>
+                        • <strong>GAIL:</strong> All PE +₹2,500/MT<br><br>
+                        
+                        <strong>Round 2 - Feb 9, 2026:</strong><br>
+                        • <strong>Reliance:</strong> All HDPE +₹2,000/MT (except M60075 +₹3,000/MT), All LLDPE +₹2,500/MT, PP domestic +₹2,000/MT<br>
+                        • <strong>IOCL:</strong> HDPE standard grades +₹2,000/MT, HDPE Low MFI (080M60, 080M60U, 080M55, XMHD) +₹3,000/MT, LLDPE +₹2,500/MT, PP +₹2,000/MT<br>
+                        • <strong>GAIL:</strong> HDPE standard +₹2,000/MT, HDPE Low MFI +₹3,000/MT, LLDPE +₹2,500/MT<br><br>
+                        
+                        <strong>Round 3 - Feb 15, 2026:</strong><br>
+                        • <strong>Reliance:</strong> PP deemed export ONLY +₹4/kg (₹4,000/MT), NO CHANGE in domestic PP or any PE grades<br><br>
+                        
+                        <strong>💰 Total Cumulative Increases in Feb 2026:</strong><br>
+                        • LDPE (Reliance): ₹4/kg total | LDPE (IOCL): ₹5/kg total<br>
+                        • HDPE (Standard): ₹4.5/kg total | HDPE (Low MFI like M60075): ₹5.5/kg total<br>
+                        • PP (Domestic): ₹4.5/kg total | PP (Deemed Export): ₹10/kg total<br>
+                        <br>
+                        <strong>💡 Data Sources:</strong> Official manufacturer announcements from Reliance Industries (RIL), IOCL, GAIL, HPCL, MRPL, Nayara Energy compiled from PlastMart and Plastic4Trade price movement trackers.<br>
+                        <br>
+                        <strong>⚠️ Important Notes:</strong>
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>Prices shown are post all THREE Feb 2026 revisions (Feb 1, Feb 9, Feb 15)</li>
+                            <li>These are indicative ex-factory rates per kg in Indian Rupees</li>
+                            <li>Actual transaction prices vary by quantity (bulk discounts apply), location, payment terms, and delivery mode</li>
+                            <li>GST (18%) is additional on all prices shown</li>
+                            <li>Prices are subject to further change based on crude oil movements and future manufacturer announcements</li>
+                            <li>For firm quotations, contact manufacturers or authorized distributors directly</li>
+                            <li>Special grades and low MFI injection molding grades had higher increases (+₹3,000/MT vs standard +₹2,000/MT in Feb 9 round)</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                // Summary view (existing simple cards)
+                displaySummaryView(container);
+            }
+        }
+
+        function createResinSection(name, fullName, cssClass, grades) {
+            return `
+                <div class="resin-section">
+                    <div class="resin-header">
+                        <span class="resin-icon-large ${cssClass}">${name}</span>
+                        <div>
+                            <h2 style="margin-bottom: 5px;">${fullName}</h2>
+                            <p style="opacity: 0.9; font-size: 14px;">Price Range: ₹${Math.min(...grades.map(g => g.price))}-${Math.max(...grades.map(g => g.price))}/kg</p>
+                        </div>
+                    </div>
+                    <div class="grade-table-container">
+                        <table class="grade-table">
+                            <thead>
+                                <tr>
+                                    <th>Grade Code</th>
+                                    <th>Application / Description</th>
+                                    <th>Manufacturer</th>
+                                    <th>Price (₹/kg)</th>
+                                    <th>Price (₹/MT)</th>
+                                    <th>Recent Change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${grades.map(grade => `
+                                    <tr>
+                                        <td class="grade-code">${grade.code}</td>
+                                        <td>${grade.desc}</td>
+                                        <td><span class="manufacturer">${grade.mfr}</span></td>
+                                        <td class="price-cell">₹${grade.price}</td>
+                                        <td>₹${grade.mt.toLocaleString()}</td>
+                                        <td><span class="price-change positive">${grade.change}</span></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displaySummaryView(container) {
+            const avgLDPE = Math.round(gradeData.ldpe.reduce((sum, g) => sum + g.price, 0) / gradeData.ldpe.length);
+            const avgHDPE = Math.round(gradeData.hdpe.reduce((sum, g) => sum + g.price, 0) / gradeData.hdpe.length);
+            const avgPP = Math.round(gradeData.pp.reduce((sum, g) => sum + g.price, 0) / gradeData.pp.length);
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                    ${createSummaryCard('LDPE', 'Low-Density Polyethylene', 'ldpe', avgLDPE, gradeData.ldpe.length)}
+                    ${createSummaryCard('HDPE', 'High-Density Polyethylene', 'hdpe', avgHDPE, gradeData.hdpe.length)}
+                    ${createSummaryCard('PP', 'Polypropylene', 'pp', avgPP, gradeData.pp.length)}
+                </div>
+                <div class="source-info">
+                    <strong>💡 Tip:</strong> Click "Toggle Summary/Detail View" to see grade-specific prices for all ${gradeData.ldpe.length + gradeData.hdpe.length + gradeData.pp.length} grades tracked.
+                </div>
+            `;
+        }
+
+        function createSummaryCard(name, fullName, cssClass, avgPrice, gradeCount) {
+            return `
+                <div style="background: white; border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px;">
+                    <h3 style="color: #1e3c72; display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <span class="resin-icon-large ${cssClass}" style="width: 40px; height: 40px; font-size: 16px;">${name}</span>
+                        ${fullName}
+                    </h3>
+                    <div style="font-size: 2em; font-weight: bold; color: #4CAF50; margin: 10px 0;">₹${avgPrice}/kg</div>
+                    <div style="color: #666; font-size: 14px;">Average across ${gradeCount} grades</div>
+                </div>
+            `;
+        }
+
+        function toggleView() {
+            detailView = !detailView;
+            displayPrices();
+        }
+
+        function refreshPrices() {
+            displayPrices();
+            document.getElementById('lastUpdated').textContent = 
+                'Last updated: ' + new Date().toLocaleString();
+            alert('✅ Display refreshed! Prices are based on latest manufacturer announcements (Feb 9, 2026)');
+        }
+
+        function exportData() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Resin Type,Grade Code,Application/Description,Manufacturer,Price (INR/kg),Price (INR/MT),Recent Change,Last Updated\n";
+            
+            const allGrades = [
+                ...gradeData.ldpe.map(g => ({ ...g, type: 'LDPE' })),
+                ...gradeData.hdpe.map(g => ({ ...g, type: 'HDPE' })),
+                ...gradeData.pp.map(g => ({ ...g, type: 'PP' }))
+            ];
+            
+            allGrades.forEach(grade => {
+                csvContent += `${grade.type},${grade.code},"${grade.desc}",${grade.mfr},${grade.price},${grade.mt},${grade.change},Feb 18 2026\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "plastic_grade_prices_" + new Date().toISOString().split('T')[0] + ".csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Display prices on load
+        window.addEventListener('load', () => {
+            displayPrices();
+        });
+    </script>
+</body>
+</html>
