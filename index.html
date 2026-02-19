@@ -3,452 +3,954 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plastic Resin Price Tracker - Grade Specific Rates</title>
+    <title>Plastic Resin Price Tracker - India</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #0a0e17;
+            --surface: #111827;
+            --surface2: #1a2235;
+            --border: #1e2d45;
+            --accent: #00d4aa;
+            --accent2: #0099ff;
+            --accent3: #ff6b35;
+            --text: #e2e8f0;
+            --text-muted: #64748b;
+            --ldpe: #ff6b6b;
+            --hdpe: #00d4aa;
+            --pp: #f59e0b;
+            --up: #22c55e;
+            --down: #ef4444;
         }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
         }
-        
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+
+        /* TICKER BAR */
+        .ticker-wrap {
+            background: var(--accent);
+            color: #000;
+            padding: 6px 0;
             overflow: hidden;
+            white-space: nowrap;
         }
-        
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 40s linear infinite;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* HEADER */
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        
-        .controls {
-            padding: 25px 30px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 24px 40px;
             display: flex;
-            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .logo-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* CONTROLS */
+        .controls {
+            padding: 20px 40px;
+            display: flex;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
         }
-        
         .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
+            padding: 9px 18px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
-        }
-        
-        .btn-primary {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-        }
-        
-        .btn-secondary {
-            background: #2196F3;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #0b7dda;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
-        }
-        
-        .btn-toggle {
-            background: #9C27B0;
-            color: white;
-        }
-        
-        .btn-toggle:hover {
-            background: #7B1FA2;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
-        }
-        
-        .last-updated {
-            margin-left: auto;
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .alert {
-            background: #e8f5e9;
-            border-left: 4px solid #4CAF50;
-            padding: 15px;
-            margin: 0 0 20px 0;
-            border-radius: 5px;
-        }
-        
-        .resin-section {
-            margin-bottom: 40px;
-        }
-        
-        .resin-header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'IBM Plex Sans', sans-serif;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 6px;
         }
-        
-        .resin-icon-large {
-            width: 50px;
-            height: 50px;
+        .btn-accent { background: var(--accent); color: #000; border-color: var(--accent); }
+        .btn-accent:hover { background: #00b894; transform: translateY(-1px); }
+        .btn-blue { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+        .btn-blue:hover { background: #007acc; transform: translateY(-1px); }
+        .btn-ghost { background: transparent; color: var(--text); }
+        .btn-ghost:hover { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
+        .btn-orange { background: var(--accent3); color: #fff; border-color: var(--accent3); }
+        .btn-orange:hover { background: #e55a27; transform: translateY(-1px); }
+
+        .filter-group {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 3px;
+        }
+        .filter-btn {
+            padding: 5px 14px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        .filter-btn.active { background: var(--accent); color: #000; }
+
+        /* SETUP BANNER */
+        .setup-banner {
+            margin: 24px 40px;
+            background: linear-gradient(135deg, #1a2235, #0f1929);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 24px;
+            display: none;
+        }
+        .setup-banner.visible { display: block; }
+        .setup-banner h3 { color: var(--accent); margin-bottom: 12px; font-size: 16px; }
+        .setup-banner p { color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+        .setup-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .setup-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .setup-input:focus { outline: none; border-color: var(--accent); }
+        .setup-steps {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .setup-step {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .step-num {
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            color: #000;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 18px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
-        
-        .ldpe { background: #FF6B6B; }
-        .hdpe { background: #4ECDC4; }
-        .pp { background: #95E1D3; color: #333; }
-        
-        .grade-table-container {
+        .setup-step p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+        .setup-step code {
+            display: inline-block;
+            margin-top: 6px;
+            background: var(--surface2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            color: var(--accent);
+            font-family: 'IBM Plex Mono', monospace;
+            word-break: break-all;
+        }
+
+        /* ALERT */
+        .alert-bar {
+            margin: 0 40px 20px;
+            background: linear-gradient(135deg, #1a2a1a, #0f1f0f);
+            border: 1px solid #22c55e44;
+            border-left: 3px solid var(--up);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .alert-bar strong { color: var(--up); }
+
+        /* SUMMARY CARDS */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            padding: 0 40px 24px;
+        }
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .summary-card:hover { border-color: var(--accent); }
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+        }
+        .summary-card.ldpe::before { background: var(--ldpe); }
+        .summary-card.hdpe::before { background: var(--hdpe); }
+        .summary-card.pp::before { background: var(--pp); }
+
+        .card-label {
+            font-size: 11px;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .card-name { font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+        .card-price {
+            font-size: 36px;
+            font-weight: 700;
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+        .card-price.ldpe { color: var(--ldpe); }
+        .card-price.hdpe { color: var(--hdpe); }
+        .card-price.pp { color: var(--pp); }
+        .card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+        .card-range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+        }
+        .card-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #22c55e22;
+            color: var(--up);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* MAIN TABLE */
+        .main-content { padding: 0 40px 40px; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 16px 20px;
+            border-radius: 10px 10px 0 0;
+        }
+        .section-header.ldpe { background: linear-gradient(135deg, #2a1515, #1a0f0f); border: 1px solid #ff6b6b33; border-bottom: none; }
+        .section-header.hdpe { background: linear-gradient(135deg, #0f2a25, #0a1f1c); border: 1px solid #00d4aa33; border-bottom: none; }
+        .section-header.pp { background: linear-gradient(135deg, #2a2110, #1a150a); border: 1px solid #f59e0b33; border-bottom: none; }
+
+        .section-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: 1px;
+        }
+        .section-tag.ldpe { background: var(--ldpe); color: #fff; }
+        .section-tag.hdpe { background: var(--hdpe); color: #000; }
+        .section-tag.pp { background: var(--pp); color: #000; }
+
+        .section-title { font-size: 16px; font-weight: 600; }
+        .section-meta { margin-left: auto; font-size: 12px; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; }
+
+        .table-wrap {
             overflow-x: auto;
-            border: 2px solid #e0e0e0;
-            border-radius: 0 0 12px 12px;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 28px;
         }
-        
-        .grade-table {
+        table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background: var(--surface);
+            font-size: 13px;
         }
-        
-        .grade-table thead {
-            background: #f8f9fa;
-        }
-        
-        .grade-table th {
-            padding: 15px;
+        thead { background: var(--surface2); }
+        th {
+            padding: 12px 16px;
             text-align: left;
+            font-size: 11px;
             font-weight: 600;
-            color: #1e3c72;
-            border-bottom: 2px solid #e0e0e0;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'IBM Plex Mono', monospace;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
         }
-        
-        .grade-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #f0f0f0;
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
         }
-        
-        .grade-table tbody tr:hover {
-            background: #f8f9fa;
-        }
-        
+        tbody tr:hover { background: var(--surface2); }
+        tbody tr:last-child td { border-bottom: none; }
+
         .grade-code {
+            font-family: 'IBM Plex Mono', monospace;
             font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .price-cell {
-            font-weight: 700;
-            color: #4CAF50;
-            font-size: 1.1em;
-        }
-        
-        .manufacturer {
-            display: inline-block;
-            padding: 4px 10px;
-            background: #e3f2fd;
-            border-radius: 12px;
-            font-size: 12px;
-            color: #1976d2;
-            font-weight: 600;
-        }
-        
-        .price-change {
             font-size: 13px;
+            color: var(--text);
+            background: var(--surface2);
             padding: 3px 8px;
-            border-radius: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        .mfr-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+            white-space: nowrap;
         }
-        
-        .positive {
-            background: #e8f5e9;
-            color: #2e7d32;
+        .mfr-RIL, .mfr-Reliance { background: #0a2a4a; color: #60b8ff; border: 1px solid #0066cc44; }
+        .mfr-IOCL { background: #2a1a0a; color: #ffaa44; border: 1px solid #cc660044; }
+        .mfr-GAIL { background: #0a2a1a; color: #44cc88; border: 1px solid #00994444; }
+        .mfr-MRPL { background: #2a0a2a; color: #cc88ff; border: 1px solid #9900cc44; }
+        .mfr-NAYARA, .mfr-Nayara { background: #2a2a0a; color: #ffcc44; border: 1px solid #cc990044; }
+        .mfr-HPCL { background: #1a0a2a; color: #aa88ff; border: 1px solid #6600cc44; }
+
+        .price-val {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 700;
+            font-size: 15px;
+            white-space: nowrap;
         }
-        
-        .source-info {
-            background: #e3f2fd;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
+        .price-val.ldpe { color: var(--ldpe); }
+        .price-val.hdpe { color: var(--hdpe); }
+        .price-val.pp { color: var(--pp); }
+
+        .price-mt {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .change-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'IBM Plex Mono', monospace;
+            white-space: nowrap;
+        }
+        .change-up { background: #22c55e22; color: var(--up); border: 1px solid #22c55e33; }
+        .change-down { background: #ef444422; color: var(--down); border: 1px solid #ef444433; }
+
+        /* LOADING STATE */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.85);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .loading-overlay.visible { display: flex; }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent); }
+
+        /* ERROR */
+        .error-box {
+            background: #2a0f0f;
+            border: 1px solid #ef444444;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 20px 40px;
             font-size: 13px;
+            color: #fca5a5;
+            display: none;
+        }
+        .error-box.visible { display: block; }
+
+        /* SOURCE INFO */
+        .source-info {
+            margin: 0 0 20px 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+        .source-info strong { color: var(--text); }
+
+        /* FOOTER */
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'IBM Plex Mono', monospace;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header, .controls, .summary-cards, .main-content, .alert-bar, .setup-banner, .error-box { padding-left: 16px; padding-right: 16px; }
+            .summary-cards { padding: 0 16px 16px; }
+            .alert-bar { margin: 0 16px 16px; }
+            .setup-banner { margin: 16px; }
+            .filter-group { margin-left: 0; }
+            .header { padding: 16px; }
+            .controls { padding: 12px 16px; }
+            .footer { padding: 12px 16px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📊 Plastic Resin Price Tracker - Grade Specific</h1>
-            <p>Detailed prices per grade from Asian markets (India) - Updated Feb 17, 2026</p>
-        </div>
-        
-        <div class="controls">
-            <button class="btn btn-primary" onclick="refreshPrices()">🔄 Refresh Display</button>
-            <button class="btn btn-secondary" onclick="exportData()">📊 Export to CSV</button>
-            <button class="btn btn-toggle" onclick="toggleView()">🔀 Toggle Summary/Detail View</button>
-            <div class="last-updated" id="lastUpdated">Last updated: Feb 17, 2026 (Includes all Feb price changes)</div>
-        </div>
-        
-        <div class="content">
-            <div class="alert">
-                <strong>📢 Latest Update (Feb 17, 2026):</strong> THREE price revisions in Feb 2026!<br>
-                • <strong>Feb 1:</strong> All manufacturers +₹2,500/MT (PE), +₹2,500/MT (PP domestic)<br>
-                • <strong>Feb 9:</strong> HDPE +₹2,000/MT (Low MFI +₹3,000/MT), LLDPE +₹2,500/MT, PP +₹2,000/MT<br>
-                • <strong>Feb 15 (RIL):</strong> PP Deemed Export +₹4/kg (₹4,000/MT) - NO CHANGE in domestic PP/PE<br>
-                <strong>Total Feb increases: LDPE ~₹4-4.5/kg | HDPE ~₹4-5/kg | PP ~₹4-4.5/kg</strong>
-            </div>
-            
-            <div id="priceContainer"></div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Fetching latest prices from Google Sheets...</div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+    <span class="ticker-content" id="tickerContent">
+        ◆ LDPE avg ₹124/kg &nbsp;&nbsp;&nbsp; ◆ HDPE avg ₹112/kg &nbsp;&nbsp;&nbsp; ◆ PP avg ₹116/kg &nbsp;&nbsp;&nbsp; ◆ Feb 2026: LDPE +₹4-5/kg · HDPE +₹4.5-5.5/kg · PP +₹4.5/kg &nbsp;&nbsp;&nbsp; ◆ Source: RIL · IOCL · GAIL · MRPL · NAYARA &nbsp;&nbsp;&nbsp; ◆ GST 18% additional &nbsp;&nbsp;&nbsp;
+    </span>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">
+        <div class="logo-icon">📊</div>
+        <div class="logo-text">
+            <h1>Resin Price Tracker</h1>
+            <p>INDIA · EX-FACTORY RATES · INR/KG</p>
         </div>
     </div>
+    <div class="header-right">
+        <div class="status-badge">
+            <div class="status-dot" id="statusDot"></div>
+            <span id="statusText">Loading...</span>
+        </div>
+    </div>
+</div>
 
-    <script>
-        let detailView = true;
-        
-        const gradeData = {
-            ldpe: [
-                { code: 'JF19010', desc: 'Mono & Multilayer blown films, liner bags', mfr: 'Reliance', price: 126, mt: 126000, change: '+4.5' },
-                { code: 'JF18010', desc: 'Lamination films, stretch cling films', mfr: 'Reliance', price: 125, mt: 125000, change: '+4.5' },
-                { code: 'JF18020', desc: 'Cast and Blown films, stretch wrap, bubble wrap', mfr: 'Reliance', price: 127, mt: 127000, change: '+4.5' },
-                { code: 'F17030', desc: 'Cast films, hygiene films, personal care packaging', mfr: 'Reliance', price: 128, mt: 128000, change: '+4.5' },
-                { code: 'JD22010', desc: 'Drip irrigation laterals (pipes)', mfr: 'Reliance', price: 124, mt: 124000, change: '+4.5' },
-                { code: 'E24065', desc: 'Extrusion coating (on woven fabric, paper, foil)', mfr: 'Reliance', price: 122, mt: 122000, change: '+4.5' },
-                { code: 'M26500', desc: 'Masterbatch base resin, injection molded lids', mfr: 'Reliance', price: 120, mt: 120000, change: '+4.5' },
-                { code: 'F0120L', desc: 'General purpose packaging, multilayer films', mfr: 'IOCL', price: 123, mt: 123000, change: '+5.0' },
-                { code: 'F0118L', desc: 'General purpose packaging, drip laterals', mfr: 'IOCL', price: 122, mt: 122000, change: '+5.0' }
-            ],
-            hdpe: [
-                { code: 'HD53EA', desc: 'Stretched tapes, woven sacks, monofilaments', mfr: 'Reliance', price: 110, mt: 110000, change: '+4.5' },
-                { code: 'HD50MA180', desc: 'Houseware, storage bins, thin-walled products', mfr: 'Reliance', price: 112, mt: 112000, change: '+4.5' },
-                { code: 'M60075', desc: 'Plastic crates, luggage shells, industrial bins', mfr: 'Reliance', price: 116, mt: 116000, change: '+5.5' },
-                { code: 'B50603', desc: 'Blow molding of oil/jerry cans (up to 20L)', mfr: 'Reliance', price: 111, mt: 111000, change: '+4.5' },
-                { code: 'F46003', desc: 'Co-extruded liners and small blow-molded bottles', mfr: 'Reliance', price: 113, mt: 113000, change: '+4.5' },
-                { code: 'S42005', desc: 'General purpose blending and sheathing', mfr: 'Reliance', price: 109, mt: 109000, change: '+4.5' },
-                { code: 'P0142S', desc: 'PE 63 pressure pipes, sprinkler pipes', mfr: 'IOCL', price: 115, mt: 115000, change: '+5.0' },
-                { code: 'B0148D', desc: 'Medium to large type blow-molded containers (up to 120L)', mfr: 'IOCL', price: 113, mt: 113000, change: '+5.0' },
-                { code: 'B0155D', desc: 'General purpose blow-molded containers (up to 20L)', mfr: 'IOCL', price: 112, mt: 112000, change: '+5.0' },
-                { code: 'M0861S', desc: 'Injection molding for crates, furniture, houseware', mfr: 'IOCL', price: 115, mt: 115000, change: '+5.5' },
-                { code: 'B0151D', desc: 'Blow molding for containers (bottles, oil cans)', mfr: 'GAIL', price: 111, mt: 111000, change: '+4.5' },
-                { code: 'F0146D', desc: 'HDPE film (grocery bags, liners)', mfr: 'GAIL', price: 110, mt: 110000, change: '+4.5' }
-            ],
-            pp: [
-                { code: 'H110QS', desc: 'Biaxially Oriented PP (BOPP) films for food packaging', mfr: 'NAYARA', price: 119, mt: 119000, change: '+4.5' },
-                { code: 'H100S', desc: 'Injection molding of industrial and household items', mfr: 'NAYARA', price: 116, mt: 116000, change: '+4.5' },
-                { code: 'HF010', desc: 'TOPP (Tubular Quenched) Film - garment packaging', mfr: 'MRPL', price: 118, mt: 118000, change: '+4.5' },
-                { code: 'HM012T', desc: 'Stretched tapes and woven sacks (Raffia)', mfr: 'MRPL', price: 114, mt: 114000, change: '+4.5' },
-                { code: 'HR003', desc: 'Thermoforming and extrusion applications', mfr: 'MRPL', price: 117, mt: 117000, change: '+4.5' },
-                { code: 'H110EY', desc: 'Raffia for woven sacks and monofilaments', mfr: 'Reliance', price: 115, mt: 115000, change: '+4.5' },
-                { code: 'H110MA', desc: 'Injection molding for houseware and furniture', mfr: 'Reliance', price: 117, mt: 117000, change: '+4.5' },
-                { code: 'P0142SU', desc: 'Pressure pipes (PE 80/PE 100) and sprinkler systems', mfr: 'IOCL', price: 118, mt: 118000, change: '+4.5' },
-                { code: 'Y0154S', desc: 'Monofilaments and netting', mfr: 'IOCL', price: 115, mt: 115000, change: '+4.5' }
-            ]
-        };
+<!-- CONTROLS -->
+<div class="controls">
+    <button class="btn btn-accent" onclick="fetchFromSheets()">🔄 Refresh Prices</button>
+    <button class="btn btn-blue" onclick="exportCSV()">📥 Export CSV</button>
+    <button class="btn btn-orange" onclick="toggleSetup()">⚙️ Setup Google Sheet</button>
+    <button class="btn btn-ghost" onclick="toggleView()">🔀 <span id="viewToggleLabel">Summary View</span></button>
+    <div class="filter-group">
+        <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" onclick="setFilter('LDPE', this)">LDPE</button>
+        <button class="filter-btn" onclick="setFilter('HDPE', this)">HDPE</button>
+        <button class="filter-btn" onclick="setFilter('PP', this)">PP</button>
+    </div>
+</div>
 
-        function displayPrices() {
-            const container = document.getElementById('priceContainer');
-            
-            if (detailView) {
-                // Detailed grade-specific view
-                container.innerHTML = `
-                    ${createResinSection('LDPE', 'Low-Density Polyethylene', 'ldpe', gradeData.ldpe)}
-                    ${createResinSection('HDPE', 'High-Density Polyethylene', 'hdpe', gradeData.hdpe)}
-                    ${createResinSection('PP', 'Polypropylene', 'pp', gradeData.pp)}
-                    
-                    <div class="source-info">
-                        <strong>📊 Complete Feb 2026 Price Update History:</strong><br>
-                        <strong>Round 1 - Feb 1, 2026:</strong><br>
-                        • <strong>Reliance:</strong> LDPE +₹2,000/MT (except 22FA002 +₹2,500/MT), HDPE/LLDPE +₹2,500/MT, PP domestic +₹2,500/MT, PP deemed export +₹4,000/MT<br>
-                        • <strong>IOCL:</strong> All PE +₹2,500/MT, PP +₹2,500/MT<br>
-                        • <strong>GAIL:</strong> All PE +₹2,500/MT<br><br>
-                        
-                        <strong>Round 2 - Feb 9, 2026:</strong><br>
-                        • <strong>Reliance:</strong> All HDPE +₹2,000/MT (except M60075 +₹3,000/MT), All LLDPE +₹2,500/MT, PP domestic +₹2,000/MT<br>
-                        • <strong>IOCL:</strong> HDPE standard grades +₹2,000/MT, HDPE Low MFI (080M60, 080M60U, 080M55, XMHD) +₹3,000/MT, LLDPE +₹2,500/MT, PP +₹2,000/MT<br>
-                        • <strong>GAIL:</strong> HDPE standard +₹2,000/MT, HDPE Low MFI +₹3,000/MT, LLDPE +₹2,500/MT<br><br>
-                        
-                        <strong>Round 3 - Feb 15, 2026:</strong><br>
-                        • <strong>Reliance:</strong> PP deemed export ONLY +₹4/kg (₹4,000/MT), NO CHANGE in domestic PP or any PE grades<br><br>
-                        
-                        <strong>💰 Total Cumulative Increases in Feb 2026:</strong><br>
-                        • LDPE (Reliance): ₹4/kg total | LDPE (IOCL): ₹5/kg total<br>
-                        • HDPE (Standard): ₹4.5/kg total | HDPE (Low MFI like M60075): ₹5.5/kg total<br>
-                        • PP (Domestic): ₹4.5/kg total | PP (Deemed Export): ₹10/kg total<br>
-                        <br>
-                        <strong>💡 Data Sources:</strong> Official manufacturer announcements from Reliance Industries (RIL), IOCL, GAIL, HPCL, MRPL, Nayara Energy compiled from PlastMart and Plastic4Trade price movement trackers.<br>
-                        <br>
-                        <strong>⚠️ Important Notes:</strong>
-                        <ul style="margin-top: 10px; margin-left: 20px;">
-                            <li>Prices shown are post all THREE Feb 2026 revisions (Feb 1, Feb 9, Feb 15)</li>
-                            <li>These are indicative ex-factory rates per kg in Indian Rupees</li>
-                            <li>Actual transaction prices vary by quantity (bulk discounts apply), location, payment terms, and delivery mode</li>
-                            <li>GST (18%) is additional on all prices shown</li>
-                            <li>Prices are subject to further change based on crude oil movements and future manufacturer announcements</li>
-                            <li>For firm quotations, contact manufacturers or authorized distributors directly</li>
-                            <li>Special grades and low MFI injection molding grades had higher increases (+₹3,000/MT vs standard +₹2,000/MT in Feb 9 round)</li>
-                        </ul>
-                    </div>
-                `;
-            } else {
-                // Summary view (existing simple cards)
-                displaySummaryView(container);
-            }
+<!-- SETUP BANNER -->
+<div class="setup-banner" id="setupBanner">
+    <h3>⚙️ Connect Your Google Sheet</h3>
+    <p>Enter your Google Sheet ID below. The sheet must be published publicly. See the steps to set it up correctly.</p>
+    <div class="setup-input-row">
+        <input type="text" class="setup-input" id="sheetIdInput" placeholder="Paste your Google Sheet ID here (e.g. 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms)" />
+        <button class="btn btn-accent" onclick="saveSheetId()">✅ Save & Load</button>
+        <button class="btn btn-ghost" onclick="useDefaultData()">Use Sample Data</button>
+    </div>
+    <div class="setup-steps">
+        <div class="setup-step">
+            <div class="step-num">1</div>
+            <p>Open Google Sheets and create a new sheet. Name columns exactly as shown:</p>
+            <code>Type | Code | Description | Manufacturer | Price | Change</code>
+        </div>
+        <div class="setup-step">
+            <div class="step-num">2</div>
+            <p>Fill rows with your price data. Type must be <strong>LDPE</strong>, <strong>HDPE</strong>, or <strong>PP</strong>.</p>
+            <code>LDPE | JF19010 | Film grade | Reliance | 126 | +4.5</code>
+        </div>
+        <div class="setup-step">
+            <div class="step-num">3</div>
+            <p>Go to <strong>File → Share → Publish to web</strong>. Choose your sheet, select <strong>CSV</strong>, and click Publish.</p>
+            <code>File → Share → Publish to web → CSV</code>
+        </div>
+        <div class="setup-step">
+            <div class="step-num">4</div>
+            <p>Copy the Sheet ID from the URL: <code>docs.google.com/spreadsheets/d/<strong>[THIS PART]</strong>/edit</code> and paste it above.</p>
+            <code>1BxiMVs0XRA5nFMdKvB...</code>
+        </div>
+    </div>
+</div>
+
+<!-- ERROR -->
+<div class="error-box" id="errorBox"></div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" style="padding-top: 24px;"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <span>📊 Plastic Resin Price Tracker · India · Ex-Factory Rates</span>
+    <span>GST 18% additional · Prices indicative only · Verify before transactions</span>
+    <span id="footerUpdate">Last updated: —</span>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'resin_sheet_id';
+let currentFilter = 'all';
+let detailView = true;
+let lastFetchedData = null;
+
+// ─── DEFAULT FALLBACK DATA ────────────────────────────────────────────────────
+const defaultData = {
+    ldpe: [
+        { code: 'JF19010', desc: 'Mono & Multilayer blown films, liner bags', mfr: 'Reliance', price: 126, change: '+4.5' },
+        { code: 'JF18010', desc: 'Lamination films, stretch cling films', mfr: 'Reliance', price: 125, change: '+4.5' },
+        { code: 'JF18020', desc: 'Cast and Blown films, stretch wrap, bubble wrap', mfr: 'Reliance', price: 127, change: '+4.5' },
+        { code: 'F17030', desc: 'Cast films, hygiene films, personal care packaging', mfr: 'Reliance', price: 128, change: '+4.5' },
+        { code: 'JD22010', desc: 'Drip irrigation laterals (pipes)', mfr: 'Reliance', price: 124, change: '+4.5' },
+        { code: 'E24065', desc: 'Extrusion coating (on woven fabric, paper, foil)', mfr: 'Reliance', price: 122, change: '+4.5' },
+        { code: 'M26500', desc: 'Masterbatch base resin, injection molded lids', mfr: 'Reliance', price: 120, change: '+4.5' },
+        { code: 'F0120L', desc: 'General purpose packaging, multilayer films', mfr: 'IOCL', price: 123, change: '+5.0' },
+        { code: 'F0118L', desc: 'General purpose packaging, drip laterals', mfr: 'IOCL', price: 122, change: '+5.0' }
+    ],
+    hdpe: [
+        { code: 'HD53EA', desc: 'Stretched tapes, woven sacks, monofilaments', mfr: 'Reliance', price: 110, change: '+4.5' },
+        { code: 'HD50MA180', desc: 'Houseware, storage bins, thin-walled products', mfr: 'Reliance', price: 112, change: '+4.5' },
+        { code: 'M60075', desc: 'Plastic crates, luggage shells, industrial bins', mfr: 'Reliance', price: 116, change: '+5.5' },
+        { code: 'B50603', desc: 'Blow molding of oil/jerry cans (up to 20L)', mfr: 'Reliance', price: 111, change: '+4.5' },
+        { code: 'F46003', desc: 'Co-extruded liners and small blow-molded bottles', mfr: 'Reliance', price: 113, change: '+4.5' },
+        { code: 'S42005', desc: 'General purpose blending and sheathing', mfr: 'Reliance', price: 109, change: '+4.5' },
+        { code: 'P0142S', desc: 'PE 63 pressure pipes, sprinkler pipes', mfr: 'IOCL', price: 115, change: '+5.0' },
+        { code: 'B0148D', desc: 'Medium to large blow-molded containers (up to 120L)', mfr: 'IOCL', price: 113, change: '+5.0' },
+        { code: 'B0155D', desc: 'General purpose blow-molded containers (up to 20L)', mfr: 'IOCL', price: 112, change: '+5.0' },
+        { code: 'M0861S', desc: 'Injection molding for crates, furniture, houseware', mfr: 'IOCL', price: 115, change: '+5.5' },
+        { code: 'B0151D', desc: 'Blow molding of containers (bottles, oil cans)', mfr: 'GAIL', price: 111, change: '+4.5' },
+        { code: 'F0146D', desc: 'HDPE film (grocery bags, liners)', mfr: 'GAIL', price: 110, change: '+4.5' }
+    ],
+    pp: [
+        { code: 'H110QS', desc: 'Biaxially Oriented PP (BOPP) films for food packaging', mfr: 'NAYARA', price: 119, change: '+4.5' },
+        { code: 'H100S', desc: 'Injection molding of industrial and household items', mfr: 'NAYARA', price: 116, change: '+4.5' },
+        { code: 'HF010', desc: 'TOPP (Tubular Quenched) Film - garment packaging', mfr: 'MRPL', price: 118, change: '+4.5' },
+        { code: 'HM012T', desc: 'Stretched tapes and woven sacks (Raffia)', mfr: 'MRPL', price: 114, change: '+4.5' },
+        { code: 'HR003', desc: 'Thermoforming and extrusion applications', mfr: 'MRPL', price: 117, change: '+4.5' },
+        { code: 'H110EY', desc: 'Raffia for woven sacks and monofilaments', mfr: 'Reliance', price: 115, change: '+4.5' },
+        { code: 'H110MA', desc: 'Injection molding for houseware and furniture', mfr: 'Reliance', price: 117, change: '+4.5' },
+        { code: 'P0142SU', desc: 'Pressure pipes (PE 80/PE 100) and sprinkler systems', mfr: 'IOCL', price: 118, change: '+4.5' },
+        { code: 'Y0154S', desc: 'Monofilaments and netting', mfr: 'IOCL', price: 115, change: '+4.5' }
+    ]
+};
+
+// ─── GOOGLE SHEETS FETCH ──────────────────────────────────────────────────────
+async function fetchFromSheets() {
+    const sheetId = localStorage.getItem(STORAGE_KEY);
+    if (!sheetId) {
+        showError('No Google Sheet connected. Click "Setup Google Sheet" to connect one, or use Sample Data.');
+        renderData(defaultData, 'Sample Data (not connected to Google Sheets)');
+        setStatus('Using sample data', false);
+        return;
+    }
+
+    showLoading(true);
+    hideError();
+
+    // Try multiple GID sheets: Sheet1 (gid=0)
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=0`;
+
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        const parsed = parseCSV(text);
+        if (!parsed || (parsed.ldpe.length + parsed.hdpe.length + parsed.pp.length) === 0) {
+            throw new Error('No valid data found. Check your sheet columns: Type, Code, Description, Manufacturer, Price, Change');
         }
+        lastFetchedData = parsed;
+        renderData(parsed, 'Google Sheets · Live');
+        setStatus('Live · Google Sheets', true);
+        updateTicker(parsed);
+    } catch (err) {
+        showError(`Could not load from Google Sheets: ${err.message}. Make sure the sheet is published as CSV (File → Share → Publish to web → CSV).`);
+        renderData(defaultData, 'Sample Data (fallback)');
+        setStatus('Sheet error – showing sample data', false);
+    } finally {
+        showLoading(false);
+    }
+}
 
-        function createResinSection(name, fullName, cssClass, grades) {
-            return `
-                <div class="resin-section">
-                    <div class="resin-header">
-                        <span class="resin-icon-large ${cssClass}">${name}</span>
-                        <div>
-                            <h2 style="margin-bottom: 5px;">${fullName}</h2>
-                            <p style="opacity: 0.9; font-size: 14px;">Price Range: ₹${Math.min(...grades.map(g => g.price))}-${Math.max(...grades.map(g => g.price))}/kg</p>
-                        </div>
-                    </div>
-                    <div class="grade-table-container">
-                        <table class="grade-table">
-                            <thead>
-                                <tr>
-                                    <th>Grade Code</th>
-                                    <th>Application / Description</th>
-                                    <th>Manufacturer</th>
-                                    <th>Price (₹/kg)</th>
-                                    <th>Price (₹/MT)</th>
-                                    <th>Recent Change</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${grades.map(grade => `
-                                    <tr>
-                                        <td class="grade-code">${grade.code}</td>
-                                        <td>${grade.desc}</td>
-                                        <td><span class="manufacturer">${grade.mfr}</span></td>
-                                        <td class="price-cell">₹${grade.price}</td>
-                                        <td>₹${grade.mt.toLocaleString()}</td>
-                                        <td><span class="price-change positive">${grade.change}</span></td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-        }
+function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    if (lines.length < 2) return null;
 
-        function displaySummaryView(container) {
-            const avgLDPE = Math.round(gradeData.ldpe.reduce((sum, g) => sum + g.price, 0) / gradeData.ldpe.length);
-            const avgHDPE = Math.round(gradeData.hdpe.reduce((sum, g) => sum + g.price, 0) / gradeData.hdpe.length);
-            const avgPP = Math.round(gradeData.pp.reduce((sum, g) => sum + g.price, 0) / gradeData.pp.length);
-            
-            container.innerHTML = `
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px;">
-                    ${createSummaryCard('LDPE', 'Low-Density Polyethylene', 'ldpe', avgLDPE, gradeData.ldpe.length)}
-                    ${createSummaryCard('HDPE', 'High-Density Polyethylene', 'hdpe', avgHDPE, gradeData.hdpe.length)}
-                    ${createSummaryCard('PP', 'Polypropylene', 'pp', avgPP, gradeData.pp.length)}
-                </div>
-                <div class="source-info">
-                    <strong>💡 Tip:</strong> Click "Toggle Summary/Detail View" to see grade-specific prices for all ${gradeData.ldpe.length + gradeData.hdpe.length + gradeData.pp.length} grades tracked.
-                </div>
-            `;
-        }
+    // Skip header row
+    const data = { ldpe: [], hdpe: [], pp: [] };
 
-        function createSummaryCard(name, fullName, cssClass, avgPrice, gradeCount) {
-            return `
-                <div style="background: white; border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px;">
-                    <h3 style="color: #1e3c72; display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                        <span class="resin-icon-large ${cssClass}" style="width: 40px; height: 40px; font-size: 16px;">${name}</span>
-                        ${fullName}
-                    </h3>
-                    <div style="font-size: 2em; font-weight: bold; color: #4CAF50; margin: 10px 0;">₹${avgPrice}/kg</div>
-                    <div style="color: #666; font-size: 14px;">Average across ${gradeCount} grades</div>
-                </div>
-            `;
-        }
+    for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+        if (cols.length < 5) continue;
 
-        function toggleView() {
-            detailView = !detailView;
-            displayPrices();
-        }
+        const type = (cols[0] || '').toUpperCase();
+        const code = cols[1] || '';
+        const desc = cols[2] || '';
+        const mfr = cols[3] || '';
+        const price = parseFloat(cols[4]) || 0;
+        const change = cols[5] || '0';
 
-        function refreshPrices() {
-            displayPrices();
-            document.getElementById('lastUpdated').textContent = 
-                'Last updated: ' + new Date().toLocaleString();
-            alert('✅ Display refreshed! Prices are based on latest manufacturer announcements (Feb 9, 2026)');
-        }
+        if (!code || !price) continue;
 
-        function exportData() {
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Resin Type,Grade Code,Application/Description,Manufacturer,Price (INR/kg),Price (INR/MT),Recent Change,Last Updated\n";
-            
-            const allGrades = [
-                ...gradeData.ldpe.map(g => ({ ...g, type: 'LDPE' })),
-                ...gradeData.hdpe.map(g => ({ ...g, type: 'HDPE' })),
-                ...gradeData.pp.map(g => ({ ...g, type: 'PP' }))
-            ];
-            
-            allGrades.forEach(grade => {
-                csvContent += `${grade.type},${grade.code},"${grade.desc}",${grade.mfr},${grade.price},${grade.mt},${grade.change},Feb 18 2026\n`;
-            });
-            
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "plastic_grade_prices_" + new Date().toISOString().split('T')[0] + ".csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        const item = { code, desc, mfr, price, change };
 
-        // Display prices on load
-        window.addEventListener('load', () => {
-            displayPrices();
+        if (type === 'LDPE') data.ldpe.push(item);
+        else if (type === 'HDPE') data.hdpe.push(item);
+        else if (type === 'PP') data.pp.push(item);
+    }
+
+    return data;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function renderData(data, source) {
+    lastFetchedData = data;
+    const now = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    document.getElementById('footerUpdate').textContent = `Updated: ${now} · ${source}`;
+
+    const container = document.getElementById('mainContent');
+
+    if (!detailView) {
+        renderSummary(data, container);
+        return;
+    }
+
+    const sections = [
+        { key: 'ldpe', name: 'LDPE', full: 'Low-Density Polyethylene' },
+        { key: 'hdpe', name: 'HDPE', full: 'High-Density Polyethylene' },
+        { key: 'pp',   name: 'PP',   full: 'Polypropylene' }
+    ].filter(s => currentFilter === 'all' || currentFilter === s.name);
+
+    const avg = (arr) => arr.length ? Math.round(arr.reduce((s, g) => s + g.price, 0) / arr.length) : 0;
+    const ldpeAvg = avg(data.ldpe);
+    const hdpeAvg = avg(data.hdpe);
+    const ppAvg   = avg(data.pp);
+
+    let html = `
+        <div class="alert-bar" style="margin: 0 40px 20px;">
+            <strong>📢 Feb 2026 Updates:</strong> &nbsp;
+            Round 1 (Feb 1): All PE +₹2,500/MT, PP +₹2,500/MT &nbsp;·&nbsp;
+            Round 2 (Feb 9): HDPE +₹2,000-3,000/MT, LLDPE +₹2,500/MT, PP +₹2,000/MT &nbsp;·&nbsp;
+            Round 3 (Feb 15): PP Deemed Export +₹4/kg (RIL only)
+        </div>
+        <div class="summary-cards" style="padding: 0 40px 24px;">
+            ${summaryCard('ldpe', 'LDPE', 'Low-Density Polyethylene', ldpeAvg, data.ldpe, '+₹4-5/kg')}
+            ${summaryCard('hdpe', 'HDPE', 'High-Density Polyethylene', hdpeAvg, data.hdpe, '+₹4.5-5.5/kg')}
+            ${summaryCard('pp', 'PP', 'Polypropylene', ppAvg, data.pp, '+₹4.5/kg')}
+        </div>
+        <div class="main-content">
+    `;
+
+    for (const s of sections) {
+        const grades = data[s.key];
+        if (!grades || grades.length === 0) continue;
+        const minP = Math.min(...grades.map(g => g.price));
+        const maxP = Math.max(...grades.map(g => g.price));
+        html += `
+            <div class="section-header ${s.key}">
+                <span class="section-tag ${s.key}">${s.name}</span>
+                <span class="section-title">${s.full}</span>
+                <span class="section-meta">₹${minP}–₹${maxP}/kg · ${grades.length} grades</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Grade Code</th>
+                            <th>Application / Description</th>
+                            <th>Manufacturer</th>
+                            <th>₹/kg</th>
+                            <th>₹/MT</th>
+                            <th>Feb Change</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${grades.map(g => `
+                            <tr>
+                                <td><span class="grade-code">${g.code}</span></td>
+                                <td style="color: #94a3b8; max-width: 320px;">${g.desc}</td>
+                                <td><span class="mfr-badge mfr-${g.mfr.replace(/\s/g,'')}">${g.mfr}</span></td>
+                                <td><span class="price-val ${s.key}">₹${g.price}</span></td>
+                                <td><span class="price-mt">₹${(g.price * 1000).toLocaleString('en-IN')}</span></td>
+                                <td>${changeBadge(g.change)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    html += `
+        <div class="source-info">
+            <strong>📊 Data Sources:</strong> Official manufacturer announcements — Reliance Industries (RIL), IOCL, GAIL, MRPL, Nayara Energy · Compiled via PlastMart &amp; Plastic4Trade<br>
+            <strong>⚠️ Notes:</strong> Ex-factory indicative rates in INR/kg · GST 18% additional · Actual prices vary by quantity, location &amp; payment terms · For firm quotes contact manufacturers directly
+        </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+function summaryCard(cls, name, full, avg, grades, cumChange) {
+    if (!grades || grades.length === 0) return '';
+    const min = Math.min(...grades.map(g => g.price));
+    const max = Math.max(...grades.map(g => g.price));
+    return `
+        <div class="summary-card ${cls}">
+            <div class="card-label">${name}</div>
+            <div class="card-name">${full}</div>
+            <div class="card-price ${cls}">₹${avg}<span style="font-size:18px;font-weight:400;">/kg</span></div>
+            <div class="card-sub">Average across ${grades.length} grades · <span class="card-change">▲ ${cumChange} cumulative</span></div>
+            <div class="card-range">
+                <span>Low ₹${min}/kg</span>
+                <span>High ₹${max}/kg</span>
+                <span>₹${(avg * 1000).toLocaleString('en-IN')}/MT</span>
+            </div>
+        </div>
+    `;
+}
+
+function renderSummary(data, container) {
+    const avg = (arr) => arr.length ? Math.round(arr.reduce((s, g) => s + g.price, 0) / arr.length) : 0;
+    container.innerHTML = `
+        <div class="summary-cards" style="padding: 24px 40px;">
+            ${summaryCard('ldpe','LDPE','Low-Density Polyethylene', avg(data.ldpe), data.ldpe, '+₹4-5/kg')}
+            ${summaryCard('hdpe','HDPE','High-Density Polyethylene', avg(data.hdpe), data.hdpe, '+₹4.5-5.5/kg')}
+            ${summaryCard('pp','PP','Polypropylene', avg(data.pp), data.pp, '+₹4.5/kg')}
+        </div>
+        <div style="padding: 0 40px; color: var(--text-muted); font-size: 13px; text-align: center;">
+            Click <strong style="color:var(--text)">🔀 Detail View</strong> to see all ${data.ldpe.length + data.hdpe.length + data.pp.length} grade-specific prices
+        </div>
+    `;
+}
+
+function changeBadge(val) {
+    const num = parseFloat(val);
+    if (isNaN(num)) return `<span class="change-badge" style="color:var(--text-muted)">${val}</span>`;
+    const cls = num >= 0 ? 'change-up' : 'change-down';
+    const arrow = num >= 0 ? '▲' : '▼';
+    const display = num >= 0 ? `+${Math.abs(num)}` : `-${Math.abs(num)}`;
+    return `<span class="change-badge ${cls}">${arrow} ₹${display}/kg</span>`;
+}
+
+// ─── UI HELPERS ───────────────────────────────────────────────────────────────
+function toggleSetup() {
+    const b = document.getElementById('setupBanner');
+    b.classList.toggle('visible');
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) document.getElementById('sheetIdInput').value = saved;
+}
+
+function saveSheetId() {
+    const val = document.getElementById('sheetIdInput').value.trim();
+    if (!val) { alert('Please enter a Sheet ID'); return; }
+    // Extract just the ID if user pasted full URL
+    const match = val.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+    const id = match ? match[1] : val;
+    localStorage.setItem(STORAGE_KEY, id);
+    document.getElementById('setupBanner').classList.remove('visible');
+    fetchFromSheets();
+}
+
+function useDefaultData() {
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('setupBanner').classList.remove('visible');
+    renderData(defaultData, 'Sample Data');
+    setStatus('Using sample data', false);
+}
+
+function toggleView() {
+    detailView = !detailView;
+    document.getElementById('viewToggleLabel').textContent = detailView ? 'Summary View' : 'Detail View';
+    if (lastFetchedData) renderData(lastFetchedData, '');
+}
+
+function setFilter(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (lastFetchedData) renderData(lastFetchedData, '');
+}
+
+function setStatus(text, live) {
+    document.getElementById('statusText').textContent = text;
+    document.getElementById('statusDot').style.background = live ? 'var(--accent)' : '#f59e0b';
+}
+
+function showLoading(show) {
+    document.getElementById('loadingOverlay').classList.toggle('visible', show);
+}
+
+function showError(msg) {
+    const b = document.getElementById('errorBox');
+    b.textContent = '⚠️ ' + msg;
+    b.classList.add('visible');
+}
+
+function hideError() {
+    document.getElementById('errorBox').classList.remove('visible');
+}
+
+function updateTicker(data) {
+    const avg = (arr) => arr.length ? Math.round(arr.reduce((s, g) => s + g.price, 0) / arr.length) : 0;
+    document.getElementById('tickerContent').textContent =
+        `◆ LDPE avg ₹${avg(data.ldpe)}/kg    ◆ HDPE avg ₹${avg(data.hdpe)}/kg    ◆ PP avg ₹${avg(data.pp)}/kg    ◆ ${data.ldpe.length + data.hdpe.length + data.pp.length} grades tracked    ◆ GST 18% additional    ◆ Ex-factory rates only    `;
+}
+
+// ─── CSV EXPORT ───────────────────────────────────────────────────────────────
+function exportCSV() {
+    const data = lastFetchedData || defaultData;
+    let csv = 'Type,Grade Code,Description,Manufacturer,Price (INR/kg),Price (INR/MT),Feb 2026 Change,Exported On\n';
+    const date = new Date().toLocaleDateString('en-IN');
+    ['ldpe','hdpe','pp'].forEach(type => {
+        data[type].forEach(g => {
+            csv += `${type.toUpperCase()},"${g.code}","${g.desc}","${g.mfr}",${g.price},${g.price * 1000},${g.change},${date}\n`;
         });
-    </script>
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `resin_prices_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+        fetchFromSheets();
+    } else {
+        renderData(defaultData, 'Sample Data (connect Google Sheet to go live)');
+        setStatus('Not connected · Sample data', false);
+        // Auto-show setup on first visit
+        document.getElementById('setupBanner').classList.add('visible');
+    }
+});
+</script>
 </body>
 </html>
